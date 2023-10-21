@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aluminum Management System</title>
+    <style>
+        /* Add your custom styles here */
+        body {
+            font-family: Arial, sans-serif;
+            color: blueviolet;
+            font-style: normal;
+            background-color: #60f981;
+        }
+
+        header {
+            background-color: #00ab52;
+            padding: 20px;
+            text-align: center;
+        }
+
+        #data-section {
+            margin-top: 20px;
+        }
+
+        #input-section {
+            margin-top: 20px;
+        }
+
+        input[type="text"],
+        input[type="number"] {
+            margin-bottom: 10px;
+        }
+
+        button {
+            color: red;
+            font-display: dark;
+            font-feature-settings: "aalt";
+        }
+
+        button:hover {
+            size: 50px;
+            color: darkred;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <marquee behavior="scroll" direction="left">
+            <h1>Aluminum Management System</h1>
+        </marquee>
+    </header>
+
+    <section id="data-section">
+        <!-- Data Display Area -->
+    </section>
+
+    <section id="input-section">
+        <h2>Add New Aluminum Data</h2>
+        <input type="text" id="name" placeholder="Name"><br>
+        <input type="number" id="quantity" placeholder="Quantity"><br>
+        <input type="number" id="price" placeholder="Price"><br>
+        <button onclick="addAluminumData()">Add Data</button>
+    </section>
+
+    <button onclick="goHome()">Home</button>
+    <button onclick="goToAbout()">About</button>
+
+    <script>
+        const dataSection = document.getElementById('data-section');
+        const inputSection = document.getElementById('input-section');
+        let aluminumData = [
+            { id: 1, name: 'Aluminum 1', quantity: 100, price: 10 },
+            { id: 2, name: 'Aluminum 2', quantity: 150, price: 15 },
+            // Add more data here
+        ];
+
+        function displayAluminumData() {
+            dataSection.innerHTML = ''; // Clear previous data
+
+            aluminumData.forEach(item => {
+                const itemElement = document.createElement('div');
+                itemElement.innerHTML = `
+                    <p>ID: ${item.id}</p>
+                    <p>Name: ${item.name}</p>
+                    <p>Quantity: ${item.quantity}</p>
+                    <p>Price: ${item.price}</p>
+                    <button onclick="editAluminumData(${item.id})">Edit</button>
+                    <button onclick="deleteAluminumData(${item.id})">Delete</button>
+                    <hr>
+                `;
+                dataSection.appendChild(itemElement);
+            });
+
+            displayTotalValue();
+        }
+
+        function addAluminumData() {
+            const name = document.getElementById('name').value;
+            const quantity = document.getElementById('quantity').value;
+            const price = document.getElementById('price').value;
+
+            if (name && quantity && price) {
+                const id = aluminumData.length + 1;
+                aluminumData.push({ id, name, quantity, price });
+                displayAluminumData();
+                clearInputFields();
+            } else {
+                alert('Please fill all fields');
+            }
+        }
+
+        function editAluminumData(id) {
+            const index = aluminumData.findIndex(item => item.id === id);
+            if (index !== -1) {
+                const newName = prompt('Enter new name', aluminumData[index].name);
+                const newQuantity = prompt('Enter new quantity', aluminumData[index].quantity);
+                const newPrice = prompt('Enter new price', aluminumData[index].price);
+                aluminumData[index].name = newName;
+                aluminumData[index].quantity = parseInt(newQuantity);
+                aluminumData[index].price = parseInt(newPrice);
+                displayAluminumData();
+            }
+        }
+
+        function deleteAluminumData(id) {
+            aluminumData = aluminumData.filter(item => item.id !== id);
+            displayAluminumData();
+        }
+
+        function clearInputFields() {
+            document.getElementById('name').value = '';
+            document.getElementById('quantity').value = '';
+            document.getElementById('price').value = '';
+        }
+
+        function displayTotalValue() {
+            const totalValue = aluminumData.reduce((total, item) => {
+                return total + item.quantity * item.price;
+            }, 0);
+            const totalValueElement = document.createElement('div');
+            totalValueElement.innerHTML = `<h3>Total Value: $${totalValue}</h3>`;
+            dataSection.appendChild(totalValueElement);
+        }
+
+        function goHome() {
+            // Add your home page URL here
+            window.location.href = 'YOUR_HOME_PAGE_URL';
+        }
+
+        function goToAbout() {
+            // Add your about page URL here
+            window.location.href = 'YOUR_ABOUT_PAGE_URL';
+        }
+
+        displayAluminumData();
+    </script>
+</body>
+</html>
